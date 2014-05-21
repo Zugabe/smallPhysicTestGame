@@ -6,6 +6,8 @@ public class Start implements Runnable {
 	boolean frameCreated = false;										//define variables
 	PaintSurface paintSurface = new PaintSurface();
 	JFrame f;
+	long lastTime;
+	static long fps;
 	
 	public static void main (String[] args){							//Main, this is where it all begins!
 		System.out.println("Starting...");								//print that everything began
@@ -37,14 +39,27 @@ public class Start implements Runnable {
 	@Override
 	public void run() {													//loop to repaint every 100ms
 		while(f.isVisible()) {											//only start loop if window is visible
-			paintSurface.repaint();										//repaint the paint surface
-		try {																			
-			Thread.sleep(100);											//wait 100ms so the computer doesn't have too much work to do
-		} catch (InterruptedException e) {
-			System.out.println("Something went horribly wrong :(");		//print sad face if loop doesnt work
+				lastTime = System.nanoTime();
+				paintSurface.repaint();										//repaint the paint surface
+				Rocket.move();
+				try {																			
+					Thread.sleep(19);											//wait 100ms so the computer doesn't have too much work to do
+				} catch (InterruptedException e) {
+					System.out.println("Something went horribly wrong :(");		//print sad face if loop doesnt work
+				}
+				fps = (long) (1000000000.0 / (System.nanoTime() - lastTime)); 	//one second(nano) divided by amount of time it takes for one frame to finish
+				lastTime = System.nanoTime();
+				System.out.println(fps);
 		}
-		}
-		
 	}
 	
+	//Getters and Setters
+	public static long getFps() {
+		return fps;
+	}
+	public void setFps(long fps) {
+		this.fps = fps;
+	}
+
+		
 }

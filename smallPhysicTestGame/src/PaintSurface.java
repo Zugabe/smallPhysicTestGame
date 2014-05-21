@@ -2,17 +2,18 @@ import java.awt.Color;															//import bunch of libraries
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-
 public class PaintSurface extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	int x = 0;																	//define variables
+	int x = Rocket.getX();																	
+	int y = Rocket.getY();
 	int ovalX;
 	int ovalY;
 	boolean printedFirstTime = true;
 	int ovalXFinal[] = new int[50];
 	int ovalYFinal[] = new int[50];
+	long fps = Start.getFps();
 	
 	public PaintSurface(){														//class PaintSurface starts here
 		for (int i=0;i<50;i++){													//generate 50 random positions for stars /w arrays
@@ -24,7 +25,7 @@ public class PaintSurface extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);												//Clear Surface
-		
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,1000,800);												//Background Color 
 		
@@ -32,8 +33,8 @@ public class PaintSurface extends JPanel {
 		
 		for (int i=0;i<50;i++){													//Stars Background repeat 50x (50 stars at the same time)
 			g.fillOval(ovalXFinal[i],ovalYFinal[i],2,2);						//draw 1 star
-			ovalXFinal[i] = ovalXFinal[i]+10;									//let stars move 10 in x direction (coordinates are bit different in java, try google to show you)
-			ovalYFinal[i] = ovalYFinal[i]-10;									//let stars move up 10 in y direction
+			ovalXFinal[i] = ovalXFinal[i]+2;									//let stars move 10 in x direction (coordinates are bit different in java, try google to show you)
+			ovalYFinal[i] = ovalYFinal[i]-2;									//let stars move up 10 in y direction
 			if(ovalXFinal[i]>1000){												//new X variable for star if moved out of surface in X direction
 				ovalXFinal[i] = (int) (Math.random()*100);
 			}
@@ -42,12 +43,14 @@ public class PaintSurface extends JPanel {
 			}
 		}																		//Stars Background End
 		
-		g.drawString(" >===== I am a rocket,someday ===>",x,300);				//draw random string on surface
-		if(x < 500){																
-			x = x + 10;															//let string move in x direction +10
-		}else{																	
-			x = 0;																//string starts at x 0 again if moved out of surface
-		}
+		x = Rocket.getX();																	
+		y = Rocket.getY();
+		g.drawString(" >===== I am a rocket,someday ===>",x,y);				//draw random string on surface
+		
+		
+		g.setColor(Color.RED);
+		fps = Start.getFps();
+		g.drawString("FPS: "+fps, 940, 10);
 		
 		//System.out.println("print");
 	}
